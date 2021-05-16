@@ -1,36 +1,56 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.4.5</version>
-    <relativePath/> <!-- lookup parent from repository -->
-  </parent>
-
-
-  <groupId>io.spring.dataflow.sample</groupId>
-  <artifactId>usage-detail-parent</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <packaging>pom</packaging>
-  <name>usage-detail-parent</name>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.4.5</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
 
 
-  <modules>
-    <module>../usage-detail-sender-kafka</module>
-    <module>../usage-cost-processor-kafka</module>
-    <module>../usage-cost-logger</module>
-  </modules>
+    <groupId>io.spring.dataflow.sample</groupId>
+    <artifactId>usage-detail-parent</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>usage-detail-parent</name>
 
-  <distributionManagement>
-    <repository>
-      <uniqueVersion>false</uniqueVersion>
-      <id>maven-snapshots</id>
-      <name>Corporate Repository</name>
-      <url>http://nexus:8081/repository/maven-snapshots</url>
-      <layout>default</layout>
-    </repository>
-  </distributionManagement>
+
+    <modules>
+        <module>../usage-detail-sender-kafka</module>
+        <module>../usage-cost-processor-kafka</module>
+        <module>../usage-cost-logger</module>
+    </modules>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <from>
+                        <image>springcloud/openjdk</image>
+                    </from>
+                    <to>
+                        <image>https://hub.docker.com/repository/docker/jeremyward/${project.artifactId}:${project.version}</image>
+                    </to>
+                    <container>
+                        <useCurrentTimestamp>true</useCurrentTimestamp>
+                    </container>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <distributionManagement>
+        <repository>
+            <uniqueVersion>false</uniqueVersion>
+            <id>maven-snapshots</id>
+            <name>Corporate Repository</name>
+            <url>http://nexus:8081/repository/maven-snapshots</url>
+            <layout>default</layout>
+        </repository>
+    </distributionManagement>
 
 </project>
