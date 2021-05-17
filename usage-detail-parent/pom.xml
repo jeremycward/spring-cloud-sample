@@ -29,15 +29,9 @@
                 <artifactId>jib-maven-plugin</artifactId>
                 <version>3.0.0</version>
                 <configuration>
-                    <from>
-                        <image>springcloud/openjdk</image>
-                    </from>
                     <to>
-                        <image>https://hub.docker.com/repository/docker/jeremyward/${project.artifactId}:${project.version}</image>
+                        <image>${project.artifactId}:${project.version}</image>
                     </to>
-                    <container>
-                        <useCurrentTimestamp>true</useCurrentTimestamp>
-                    </container>
                 </configuration>
             </plugin>
         </plugins>
