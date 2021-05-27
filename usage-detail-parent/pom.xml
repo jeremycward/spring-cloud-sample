@@ -30,7 +30,7 @@
                 <version>3.0.0</version>
                 <configuration>
                     <to>
-                        <image>jeremyward/${project.artifactId}:${project.version}</image>
+                        <image>registry.hub.docker.com/jeremyward/${project.artifactId}:${project.version}</image>
                     </to>
                     <container>
                         <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
