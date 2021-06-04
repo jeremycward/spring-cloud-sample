@@ -21,6 +21,9 @@
         <module>../usage-detail-sender-kafka</module>
         <module>../usage-cost-processor-kafka</module>
         <module>../usage-cost-logger</module>
+        <module>../polozilla-source-kafka</module>
+        <module>../polozilla-core</module>
+
     </modules>
     <build>
         <plugins>
