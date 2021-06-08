@@ -1,17 +1,13 @@
 package com.isharp.ploniexfeed.polowebsock;
 
 
-import com.isharp.ploniexfeed.PoloniexRawMessageConsumer;
 import com.isharp.ploniexfeed.connect.PoloniexWssSubscription;
-
 import com.isharp.polozilla.components.RawRecordTImestampExtractor;
 import org.apache.kafka.streams.KeyValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -20,8 +16,6 @@ import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.SynchronousQueue;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
@@ -30,8 +24,8 @@ import java.util.function.Supplier;
  * @author Jiji_Sasidharan
  */
 
-@ClientEndpoint
-@Component
+//@ClientEndpoint
+//@Component
 public class WebsocketClientEndpoint {
     final Logger logger = LoggerFactory.getLogger(WebsocketClientEndpoint.class);
     private final BlockingQueue<KeyValue<String,String>> buffer = new ArrayBlockingQueue<>(100000);
@@ -100,16 +94,6 @@ public class WebsocketClientEndpoint {
 
     }
 
-    @Bean
-    public Supplier<KeyValue<String,String>> sendEvents() {
-        return () -> {
-            try {
-                return buffer.take();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        };
-    }
 
 
 }
