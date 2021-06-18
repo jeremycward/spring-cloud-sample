@@ -3,6 +3,7 @@ package com.isharp.ploniexfeed.polowebsock;
 
 
 import com.isharp.ploniexfeed.connect.PoloniexWssSubscription;
+import com.isharp.ploniexfeed.connect.WebsocketLIstener;
 import com.isharp.polozilla.components.RawRecordTImestampExtractor;
 import org.apache.kafka.streams.KeyValue;
 import org.slf4j.Logger;
@@ -34,7 +35,8 @@ public class WebsocketClientEndpoint {
     @Value(value="${poloniex.endpoint}")
     private String poloniexEndpoint;
 
-
+    @Autowired
+    private WebsocketLIstener listener;
 
     @PostConstruct
     public void startSubscription() {
@@ -85,7 +87,8 @@ public class WebsocketClientEndpoint {
         } else {
             LocalDateTime n = LocalDateTime.now();
             String formatted = RawRecordTImestampExtractor.formatDatePrefix(n);
-            logger.info("received message {}", message);
+            listener.consume(message);
+
 
         }
 

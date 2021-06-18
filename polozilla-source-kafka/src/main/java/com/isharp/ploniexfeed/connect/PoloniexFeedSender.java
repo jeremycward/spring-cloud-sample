@@ -30,9 +30,10 @@ public class PoloniexFeedSender {
     public Supplier<KeyValue<String,String>> poloniexRawMessageRecieved() {
         return () -> {
             try {
-                Thread.sleep(1000);
-                logger.info("Sending a value to polo feeed");
-                return KeyValue.pair("timestampkey_" + Long.toString(System.currentTimeMillis()),"valuepart");
+                logger.info("Waiting to take");
+                String msg = websocketLIstener.getQ().take();
+                logger.info("took message {}",msg);
+                return KeyValue.pair("timestampkey_" + Long.toString(System.currentTimeMillis()),msg);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
