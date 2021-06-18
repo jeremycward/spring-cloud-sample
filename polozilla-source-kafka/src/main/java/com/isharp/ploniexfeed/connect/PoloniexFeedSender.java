@@ -13,8 +13,17 @@ public class PoloniexFeedSender {
     private static final Logger logger = LoggerFactory.getLogger(PoloniexFeedSender.class);
 
 
+   private final WebsocketLIstener websocketLIstener = new WebsocketLIstener();
+
+
+
     public PoloniexFeedSender() {
         logger.info("Starting up feed sender");
+    }
+
+    @Bean
+    public WebsocketLIstener getWebsocketLIstener() {
+        return websocketLIstener;
     }
 
     @Bean

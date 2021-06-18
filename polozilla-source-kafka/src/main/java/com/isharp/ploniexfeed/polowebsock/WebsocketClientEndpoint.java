@@ -1,22 +1,22 @@
 package com.isharp.ploniexfeed.polowebsock;
 
 
+
 import com.isharp.ploniexfeed.connect.PoloniexWssSubscription;
 import com.isharp.polozilla.components.RawRecordTImestampExtractor;
 import org.apache.kafka.streams.KeyValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.websocket.*;
 import java.net.URI;
 import java.time.LocalDateTime;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-import java.util.function.Supplier;
+import java.util.function.Consumer;
 
 /**
  * ChatServer Client
@@ -24,11 +24,11 @@ import java.util.function.Supplier;
  * @author Jiji_Sasidharan
  */
 
-//@ClientEndpoint
-//@Component
+@ClientEndpoint
+@Component
 public class WebsocketClientEndpoint {
     final Logger logger = LoggerFactory.getLogger(WebsocketClientEndpoint.class);
-    private final BlockingQueue<KeyValue<String,String>> buffer = new ArrayBlockingQueue<>(100000);
+
     Session userSession = null;
 
     @Value(value="${poloniex.endpoint}")
@@ -38,7 +38,7 @@ public class WebsocketClientEndpoint {
 
     @PostConstruct
     public void startSubscription() {
-
+        logger.info("about to start subscription");
         try {
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
             container.connectToServer(this, new URI(poloniexEndpoint));
@@ -58,6 +58,7 @@ public class WebsocketClientEndpoint {
         logger.info("opening websocket and subscribing");
         this.userSession = userSession;
         String subMsg = PoloniexWssSubscription.TICKER.toString();
+        sendMessage(subMsg);
     }
 
     /**
@@ -68,6 +69,7 @@ public class WebsocketClientEndpoint {
      */
     @OnClose
     public void onClose(Session userSession, CloseReason reason) {
+
         this.userSession = null;
     }
 
@@ -85,15 +87,16 @@ public class WebsocketClientEndpoint {
             String formatted = RawRecordTImestampExtractor.formatDatePrefix(n);
             logger.info("received message {}", message);
 
-            try {
-                buffer.put(new KeyValue<>(formatted,message));
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
         }
 
     }
-
-
+    /**
+     * Send a message.
+     *
+     * @param message
+     */
+    public void sendMessage(String message) {
+        this.userSession.getAsyncRemote().sendText(message);
+    }
 
 }
